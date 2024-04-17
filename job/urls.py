@@ -15,11 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path , include
+
+from app.views import *
  
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('jobapp.urls')),
     path('', include('account.urls')),
+    path('upload_cv/',start, name='upload_cv'),
+    path('save/',save),
+    path('academic/',academics),
+    path('professional/',professional),
     path('__debug__/', include('debug_toolbar.urls')),
 
 ]

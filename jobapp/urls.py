@@ -16,6 +16,10 @@ urlpatterns = [
     path('contact/', views.single_job_view, name='contact'),
     path('result/', views.search_result_view, name='search_result'),
     path('dashboard/', views.dashboard_view, name='dashboard'),
+
+    path('dashboard/employer/job/<int:id>/recommended-applicants/', views.all_recommended_applicants_view, 
+         name='recommended-applicants'),
+
     path('dashboard/employer/job/<int:id>/applicants/', views.all_applicants_view, name='applicants'),
     path('dashboard/employer/job/edit/<int:id>', views.job_edit_view, name='edit-job'),
     path('dashboard/employer/applicant/<int:id>/', views.applicant_details_view, name='applicant-details'),

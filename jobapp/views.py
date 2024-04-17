@@ -11,9 +11,11 @@ from django.views.decorators.cache import cache_page
 from django.core.cache import cache
 
 from account.models import User
+from jobapp.extractor import *
 from jobapp.forms import *
 from jobapp.models import *
 from jobapp.permission import *
+from jobapp.updaters import *
 User = get_user_model()
 
 
@@ -97,11 +99,16 @@ def create_job_View(request):
 
             instance = form.save(commit=False)
             instance.user = user
+            # print(f"The skills required are {extract_skills_textblob(instance.description)}")
+            # insert_into_db()
             instance.save()
             # for save tags
             form.save_m2m()
             messages.success(
                     request, 'You are successfully posted your job! Please wait for review.')
+            print(instance.id)
+            insert_into_db(job_instance=instance.id, skills_list=extract_skills_textblob(instance.description))
+            recommend_applicants_for_job(request=request, job_id=instance.id)
             return redirect(reverse("jobapp:single-job", kwargs={
                                     'id': instance.id
                                     }))
@@ -235,12 +242,16 @@ def dashboard_view(request):
     savedjobs = []
     appliedjobs = []
     total_applicants = {}
+    total_recommended_applicants = {}
     if request.user.role == 'employer':
 
         jobs = Job.objects.filter(user=request.user.id)
         for job in jobs:
             count = Applicant.objects.filter(job=job.id).count()
             total_applicants[job.id] = count
+        for job in jobs:
+            re_count = RecommendedApplicant.objects.filter(job=job.id).count()
+            total_recommended_applicants[job.id] = re_count
 
     if request.user.role == 'employee':
         savedjobs = BookmarkJob.objects.filter(user=request.user.id)
@@ -250,7 +261,8 @@ def dashboard_view(request):
         'jobs': jobs,
         'savedjobs': savedjobs,
         'appliedjobs':appliedjobs,
-        'total_applicants': total_applicants
+        'total_applicants': total_applicants,
+        'total_recommended_applicants': total_recommended_applicants,
     }
 
     return render(request, 'jobapp/dashboard.html', context)
@@ -299,6 +311,20 @@ def all_applicants_view(request, id):
     }
 
     return render(request, 'jobapp/all-applicants.html', context)
+
+
+@login_required(login_url=reverse_lazy('account:login'))
+@user_is_employer
+def all_recommended_applicants_view(request, id):
+
+    all_applicants = RecommendedApplicant.objects.filter(job=id)
+
+    context = {
+
+        'all_applicants': all_applicants
+    }
+
+    return render(request, 'jobapp/all-recommended-applicants.html', context)
 
 
 @login_required(login_url=reverse_lazy('account:login'))

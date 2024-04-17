@@ -9,6 +9,8 @@ class ApplicantAdmin(admin.ModelAdmin):
     
 admin.site.register(Applicant,ApplicantAdmin)
 
+admin.site.register(RecommendedApplicant)
+
 
 class JobAdmin(admin.ModelAdmin):
     list_display = ('title','is_published','is_closed','timestamp')

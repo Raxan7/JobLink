@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load get_total_applicant %}
+{% load get_total_recommended_applicant %}
 {% block content %}
 
 <section class="section-hero overlay inner-page bg-image"
@@ -37,6 +38,7 @@
                                 <th>Date expiring</th>
                                 <th>Status</th>
                                 <th>Applicants</th>
+                                <th>Recommended</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -86,6 +88,35 @@
                                     {% endif %}
 
                                 </td>
+
+                                <td>
+
+                                    {% get_total_recommended_applicant total_recommended_applicants job as is_applicant %}
+
+                                    {% if is_applicant %}
+                                    <a href="{% url 'jobapp:recommended-applicants' job.id %}">
+                                        <i class="fa fa-users"></i>
+                                        <span class="badge badge-success text-white">
+
+                                       
+                                            {% if is_applicant > 1 %}
+
+
+                                            {% get_total_recommended_applicant total_recommended_applicants job %} Recommended
+
+                                            {% else %}
+
+                                            {% get_total_recommended_applicant total_recommended_applicants job %} Recommended
+
+                                            {% endif %}
+
+                                        </span>
+                                        
+                                    </a>
+                                    {% endif %}
+
+                                </td>
+
                                 <td>
                                     <a class="btn btn-info btn-sm" href="{% url 'jobapp:edit-job' job.id %}"
                                         role="button">Edit</a>
