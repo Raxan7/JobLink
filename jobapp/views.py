@@ -19,6 +19,10 @@ from jobapp.updaters import *
 User = get_user_model()
 
 
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
+
 def home_view(request):
 
     published_jobs = Job.objects.filter(is_published=True).order_by('-timestamp')
@@ -29,7 +33,7 @@ def home_view(request):
     page_number = request.GET.get('page',None)
     page_obj = paginator.get_page(page_number)
 
-    if request.is_ajax():
+    if is_ajax(request=request):
         job_lists=[]
         job_objects_list = page_obj.object_list.values()
         for job_list in job_objects_list:
