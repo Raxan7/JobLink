@@ -26,7 +26,9 @@
         <nav class="mx-auto site-navigation">
           <ul class="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
             <li><a href="{% url 'jobapp:home' %}" class="nav-link">Home</a></li>
-            <li><a href="#">About</a></li>
+            {% if user.is_authenticated and user.role == 'employee'  %}
+            <li><a href="{% url 'upload_cv' %}">Broadcast CV</a></li>
+            {% endif %}
             <li><a href="{% url 'jobapp:job-list' %}">Job Listings</a></li>
             <li><a href="#">Contact</a></li>
           </ul>
