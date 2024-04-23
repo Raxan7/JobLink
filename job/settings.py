@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 import django_heroku
 import django
+import dj_database_url
 from django.utils.encoding import force_str
 django.utils.encoding.force_text = force_str
 
@@ -107,6 +108,11 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+# DATABASES = {
+#     "default": dj_database_url.parse("postgresql://manyerere201:exHjyP9UQFX0@ep-shy-mud-a5gs0r74.us-east-2.aws.neon.tech/raxan7_db?sslmode=require")
+# }
+
 #for debug toolbar
 INTERNAL_IPS = [
     # ...

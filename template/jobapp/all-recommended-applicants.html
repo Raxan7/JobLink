@@ -1,8 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<section class="section-hero overlay inner-page bg-image" style="background-image: url('{% static 'images/hero_1.jpg' %}');"
-    id="home-section">
+<section class="section-hero overlay inner-page bg-image" id="home-section">
+    <video autoplay muted loop id="bg-video">
+        <source src="{% static 'videos/typing.mp4' %}" type="video/mp4">
+        <!-- Add more <source> tags for other video formats if needed -->
+        Your browser does not support the video tag.
+    </video>
     <div class="container">
         <div class="row">
             <div class="col-md-7">
