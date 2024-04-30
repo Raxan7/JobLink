@@ -189,7 +189,7 @@
   right: 0;
   z-index: 2000;
   padding-top: 20px;
-  background: #fff;
+  background: rgba(135, 207, 235, 0.709);
   height: calc(100vh);
   -webkit-transform: translateX(110%);
   -ms-transform: translateX(110%);
