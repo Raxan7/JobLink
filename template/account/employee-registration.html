@@ -51,7 +51,7 @@
         </div>
         {% endfor %}
         {% endif %}
-        <form method="POST" action="" class="p-4 border rounded" style="background-color: rgba(108, 156, 99, 0.565);>
+        <form method="POST" action="" class="p-4 border rounded" style="background-color: rgba(108, 156, 99, 0.565);">
           {% csrf_token %}
           {% for field in form %}
           {% if field.name == 'gender' %}
