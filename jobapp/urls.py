@@ -19,6 +19,8 @@ urlpatterns = [
 
     path('dashboard/employer/job/<int:id>/recommended-applicants/', views.all_recommended_applicants_view, 
          name='recommended-applicants'),
+    path('dashboard/employer/all_recommended_applicants/', views.total_recommended_applicants_view, 
+         name='all_recommended_applicants'),
 
     path('dashboard/employer/job/<int:id>/applicants/', views.all_applicants_view, name='applicants'),
     path('dashboard/employer/job/edit/<int:id>', views.job_edit_view, name='edit-job'),

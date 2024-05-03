@@ -71,7 +71,7 @@ def home_view(request):
 @cache_page(60 * 15)
 def job_list_View(request):
     """
-
+        
     """
     job_list = Job.objects.filter(is_closed=False).order_by('-timestamp')
     paginator = Paginator(job_list, 12)
@@ -260,11 +260,14 @@ def dashboard_view(request):
     if request.user.role == 'employee':
         savedjobs = BookmarkJob.objects.filter(user=request.user.id)
         appliedjobs = Applicant.objects.filter(user=request.user.id)
+        recommendedjobs = RecommendedApplicant.objects.filter(user=request.user.id)
+        
     context = {
 
         'jobs': jobs,
         'savedjobs': savedjobs,
         'appliedjobs':appliedjobs,
+        'recommendedjobs':recommendedjobs,
         'total_applicants': total_applicants,
         'total_recommended_applicants': total_recommended_applicants,
     }
@@ -422,3 +425,17 @@ def job_edit_view(request, id=id):
     }
 
     return render(request, 'jobapp/job-edit.html', context)
+
+
+@login_required(login_url=reverse_lazy('account:login'))
+@user_is_employer
+def total_recommended_applicants_view(request):
+
+    applicant = RecommendedApplicant.objects.filter(job__user=request.user)
+
+    context = {
+
+        'all_applicants': applicant
+    }
+
+    return render(request, 'jobapp/all-recommended-applicants.html', context)

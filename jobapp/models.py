@@ -14,6 +14,10 @@ JOB_TYPE = (
     ('3', "Internship"),
 )
 
+CATEGORY_TYPE = {
+    ()
+}
+
 class Category(models.Model):
     name = models.CharField(max_length=50)
 

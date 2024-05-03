@@ -153,6 +153,9 @@
                           <li class="nav-item">
                             <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Aplied Job</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#recommend" role="tab" aria-controls="profile" aria-selected="false">Recommended Job</a>
+                        </li>
                       </ul>
                       <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -207,6 +210,32 @@
                             </table>
                             {% else %}
                             <p class="m-5">You have not any applied job yet !! </p>
+                            {% endif %}
+                        </div>
+
+                        <div class="tab-pane fade" id="recommend" role="tabpanel" aria-labelledby="profile-tab">
+                            <h5 class="card-header text-center">Recommended Posts</h5>
+                            {% if recommendedjobs %}
+                            <table class="table text-center mt-5">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Job Title</th>
+                                        <th>Posted Date</th>
+                                        <th>Date expiring</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for job in recommendedjobs %}
+                                    <tr id="row_{{ job.id }}">
+                                        <td><a href="{% url 'jobapp:single-job' job.job.id %}">{{ job.job.title }}</a></td>
+                                        <td>{{ job.timestamp | date:'M d, Y'  }}</td>
+                                        <td>{{ job.job.last_date | date:'M d, Y' }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% else %}
+                            <p class="m-5">You have not been recommend any job yet !! </p>
                             {% endif %}
                         </div>
                         

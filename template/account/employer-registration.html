@@ -23,6 +23,11 @@
 </section>
 
 <section class="site-section">
+  <video autoplay muted loop id="bg-video">
+    <source src="{% static 'videos/typing2.mp4' %}" type="video/mp4">
+    <!-- Add more <source> tags for other video formats if needed -->
+    Your browser does not support the video tag.
+  </video>
   <div class="container">
     <div class="row">
       <div class="col-lg-12 mb-5">
@@ -45,7 +50,7 @@
         </div>
         {% endfor %}
         {% endif %}
-        <form method="POST" action="" class="p-4 border rounded">
+        <form method="POST" action="" class="p-4 border rounded" style="background-color: rgba(108, 156, 99, 0.565);>
           {% csrf_token %}
           {% for field in form %}
 
