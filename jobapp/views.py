@@ -245,6 +245,7 @@ def dashboard_view(request):
     jobs = []
     savedjobs = []
     appliedjobs = []
+    recommendedjobs = []
     total_applicants = {}
     total_recommended_applicants = {}
     if request.user.role == 'employer':
