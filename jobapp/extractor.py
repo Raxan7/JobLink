@@ -49,8 +49,6 @@ def insert_into_db(job_instance, skills_list):
         print("Error:", e)
 
 
-
-
 def extract_skills_textblob(text):
     extracted_skills = []
     # Convert the text to lowercase for case-insensitive matching

@@ -83,5 +83,10 @@ class UserAdmin(BaseUserAdmin):
     ordering = ('email', 'first_name', 'last_name')
     filter_horizontal = ()
 
+    def get_readonly_fields(self, request, obj=None):
+        if obj:  # Editing an existing object
+            return self.readonly_fields + ('email', 'first_name', 'last_name', 'gender', 'role',)  # Make only the email field read-only
+        else:  # Creating a new object
+            return self.readonly_fields
 
 admin.site.register(User, UserAdmin)

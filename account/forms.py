@@ -7,7 +7,6 @@ from account.models import User
 
 class EmployeeRegistrationForm(UserCreationForm):
 
-
     def __init__(self, *args, **kwargs):
         UserCreationForm.__init__(self, *args, **kwargs)
         self.fields['gender'].required = True
@@ -46,7 +45,7 @@ class EmployeeRegistrationForm(UserCreationForm):
 
     class Meta:
 
-        model=User
+        model = User
 
         fields = ['first_name', 'last_name', 'email', 'password1', 'password2', 'gender']
 
@@ -57,7 +56,7 @@ class EmployeeRegistrationForm(UserCreationForm):
         return gender
 
     def save(self, commit=True):
-        user = UserCreationForm.save(self,commit=False)
+        user = UserCreationForm.save(self, commit=False)
         user.role = "employee"
         if commit:
             user.save()
@@ -99,15 +98,14 @@ class EmployerRegistrationForm(UserCreationForm):
                 'placeholder': 'Confirm Password',
             }
         )
+
     class Meta:
+        model = User
 
-        model=User
-
-        fields = ['first_name', 'last_name', 'email', 'password1', 'password2',]
-
+        fields = ['first_name', 'last_name', 'email', 'password1', 'password2', ]
 
     def save(self, commit=True):
-        user = UserCreationForm.save(self,commit=False)
+        user = UserCreationForm.save(self, commit=False)
         user.role = "employer"
         if commit:
             user.save()
@@ -115,12 +113,12 @@ class EmployerRegistrationForm(UserCreationForm):
 
 
 class UserLoginForm(forms.Form):
-    email =  forms.EmailField(
-    widget=forms.EmailInput(attrs={ 'placeholder':'Email',})
-) 
-    password = forms.CharField(strip=False,widget=forms.PasswordInput(attrs={
-        
-        'placeholder':'Password',
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={'placeholder': 'Email', })
+    )
+    password = forms.CharField(strip=False, widget=forms.PasswordInput(attrs={
+
+        'placeholder': 'Password',
     }))
 
     def clean(self, *args, **kwargs):
@@ -144,7 +142,6 @@ class UserLoginForm(forms.Form):
 
     def get_user(self):
         return self.user
-
 
 
 class EmployeeProfileEditForm(forms.ModelForm):

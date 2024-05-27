@@ -1,3 +1,4 @@
+import google.generativeai as genai
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -16,6 +17,7 @@ from jobapp.forms import *
 from jobapp.models import *
 from jobapp.permission import *
 from jobapp.updaters import *
+
 User = get_user_model()
 
 
@@ -24,49 +26,48 @@ def is_ajax(request):
 
 
 def home_view(request):
-
     published_jobs = Job.objects.filter(is_published=True).order_by('-timestamp')
     jobs = published_jobs.filter(is_closed=False)
     total_candidates = User.objects.filter(role='employee').count()
     total_companies = User.objects.filter(role='employer').count()
     paginator = Paginator(jobs, 3)
-    page_number = request.GET.get('page',None)
+    page_number = request.GET.get('page', None)
     page_obj = paginator.get_page(page_number)
 
     if is_ajax(request=request):
-        job_lists=[]
+        job_lists = []
         job_objects_list = page_obj.object_list.values()
         for job_list in job_objects_list:
             job_lists.append(job_list)
-        
 
         next_page_number = None
         if page_obj.has_next():
             next_page_number = page_obj.next_page_number()
 
-        prev_page_number = None       
+        prev_page_number = None
         if page_obj.has_previous():
             prev_page_number = page_obj.previous_page_number()
 
-        data={
-            'job_lists':job_lists,
-            'current_page_no':page_obj.number,
-            'next_page_number':next_page_number,
-            'no_of_page':paginator.num_pages,
-            'prev_page_number':prev_page_number
-        }    
+        data = {
+            'job_lists': job_lists,
+            'current_page_no': page_obj.number,
+            'next_page_number': next_page_number,
+            'no_of_page': paginator.num_pages,
+            'prev_page_number': prev_page_number
+        }
         return JsonResponse(data)
-    
+
     context = {
 
-    'total_candidates': total_candidates,
-    'total_companies': total_companies,
-    'total_jobs': len(jobs),
-    'total_completed_jobs':len(published_jobs.filter(is_closed=True)),
-    'page_obj': page_obj
+        'total_candidates': total_candidates,
+        'total_companies': total_companies,
+        'total_jobs': len(jobs),
+        'total_completed_jobs': len(published_jobs.filter(is_closed=True)),
+        'page_obj': page_obj
     }
     print('ok')
     return render(request, 'jobapp/index.html', context)
+
 
 @cache_page(60 * 15)
 def job_list_View(request):
@@ -100,7 +101,6 @@ def create_job_View(request):
     if request.method == 'POST':
 
         if form.is_valid():
-
             instance = form.save(commit=False)
             instance.user = user
             # print(f"The skills required are {extract_skills_textblob(instance.description)}")
@@ -109,13 +109,13 @@ def create_job_View(request):
             # for save tags
             form.save_m2m()
             messages.success(
-                    request, 'You are successfully posted your job! Please wait for review.')
+                request, 'You are successfully posted your job! Please wait for review.')
             print(instance.id)
             insert_into_db(job_instance=instance.id, skills_list=extract_skills_textblob(instance.description))
             recommend_applicants_for_job(request=request, job_id=instance.id)
             return redirect(reverse("jobapp:single-job", kwargs={
-                                    'id': instance.id
-                                    }))
+                'id': instance.id
+            }))
 
     context = {
         'form': form,
@@ -132,7 +132,7 @@ def single_job_view(request, id):
         job = cache.get(id)
     else:
         job = get_object_or_404(Job, id=id)
-        cache.set(id,job , 60 * 15)
+        cache.set(id, job, 60 * 15)
     related_job_list = job.tags.similar_objects()
 
     paginator = Paginator(related_job_list, 5)
@@ -204,7 +204,6 @@ def search_result_view(request):
 @login_required(login_url=reverse_lazy('account:login'))
 @user_is_employee
 def apply_job_view(request, id):
-
     form = JobApplyForm(request.POST or None)
 
     user = get_object_or_404(User, id=request.user.id)
@@ -259,16 +258,16 @@ def dashboard_view(request):
             total_recommended_applicants[job.id] = re_count
 
     if request.user.role == 'employee':
-        savedjobs = BookmarkJob.objects.filter(user=request.user.id)
-        appliedjobs = Applicant.objects.filter(user=request.user.id)
-        recommendedjobs = RecommendedApplicant.objects.filter(user=request.user.id)
-        
+        savedjobs = BookmarkJob.objects.filter(user=request.user.id).distinct()
+        appliedjobs = Applicant.objects.filter(user=request.user.id).distinct()
+        recommendedjobs = RecommendedApplicant.objects.filter(user=request.user.id).distinct()
+
     context = {
 
         'jobs': jobs,
         'savedjobs': savedjobs,
-        'appliedjobs':appliedjobs,
-        'recommendedjobs':recommendedjobs,
+        'appliedjobs': appliedjobs,
+        'recommendedjobs': recommendedjobs,
         'total_applicants': total_applicants,
         'total_recommended_applicants': total_recommended_applicants,
     }
@@ -279,11 +278,9 @@ def dashboard_view(request):
 @login_required(login_url=reverse_lazy('account:login'))
 @user_is_employer
 def delete_job_view(request, id):
-
     job = get_object_or_404(Job, id=id, user=request.user.id)
 
     if job:
-
         job.delete()
         messages.success(request, 'Your Job Post was successfully deleted!')
 
@@ -302,15 +299,13 @@ def make_complete_job_view(request, id):
             messages.success(request, 'Your Job was marked closed!')
         except:
             messages.success(request, 'Something went wrong !')
-            
-    return redirect('jobapp:dashboard')
 
+    return redirect('jobapp:dashboard')
 
 
 @login_required(login_url=reverse_lazy('account:login'))
 @user_is_employer
 def all_applicants_view(request, id):
-
     all_applicants = Applicant.objects.filter(job=id)
 
     context = {
@@ -324,8 +319,7 @@ def all_applicants_view(request, id):
 @login_required(login_url=reverse_lazy('account:login'))
 @user_is_employer
 def all_recommended_applicants_view(request, id):
-
-    all_applicants = RecommendedApplicant.objects.filter(job=id)
+    all_applicants = RecommendedApplicant.objects.filter(job=id).order_by("-relevance")
 
     context = {
 
@@ -338,11 +332,9 @@ def all_recommended_applicants_view(request, id):
 @login_required(login_url=reverse_lazy('account:login'))
 @user_is_employee
 def delete_bookmark_view(request, id):
-
     job = get_object_or_404(BookmarkJob, id=id, user=request.user.id)
 
     if job:
-
         job.delete()
         messages.success(request, 'Saved Job was successfully deleted!')
 
@@ -352,7 +344,6 @@ def delete_bookmark_view(request, id):
 @login_required(login_url=reverse_lazy('account:login'))
 @user_is_employer
 def applicant_details_view(request, id):
-
     applicant = get_object_or_404(User, id=id)
 
     context = {
@@ -366,7 +357,6 @@ def applicant_details_view(request, id):
 @login_required(login_url=reverse_lazy('account:login'))
 @user_is_employee
 def job_bookmark_view(request, id):
-
     form = JobBookmarkForm(request.POST or None)
 
     user = get_object_or_404(User, id=request.user.id)
@@ -431,7 +421,6 @@ def job_edit_view(request, id=id):
 @login_required(login_url=reverse_lazy('account:login'))
 @user_is_employer
 def total_recommended_applicants_view(request):
-
     applicant = RecommendedApplicant.objects.filter(job__user=request.user)
 
     context = {
@@ -440,3 +429,53 @@ def total_recommended_applicants_view(request):
     }
 
     return render(request, 'jobapp/all-recommended-applicants.html', context)
+
+
+@login_required(login_url=reverse_lazy('accounts:login'))
+@user_is_employee
+def employee_edit_skills(request, id=id):
+    """
+    Handle Employee Profile Update Functionality
+    """
+    user = get_object_or_404(User, id=id)
+    form = CandidateForm(request.POST or None)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save(commit=False)
+            form.instance.user = user
+            print(form.instance.user)
+            skills = form.instance.skills
+            education = form.instance.education
+            work_experience = form.instance.work_experience
+            age = form.instance.age
+            location = form.instance.location
+            if ',' in skills:
+                skill_list = [item.strip() for item in skills.split(",")]
+                for skill_name in skill_list:
+                    # obj = add_skill(email=user, name=skill_name)
+                    # obj.save()
+                    print(skill_name)
+                    recommend_applicants_for_job_with_relevance(request, [skill_name.lower()], age=age)
+            form.save()
+            messages.success(request, 'Your Candidate Profile Was Successfully Updated!')
+        else:
+            print(form.errors)
+        return redirect(reverse("jobapp:edit-skills", kwargs={'id': user.id}))
+    context = {
+        'form': form,
+    }
+    return render(request, 'jobapp/skill_form.html', context)
+
+
+def calculate_relevance_score(candidate, job_posting):
+    # Define prompts for Gemini AI
+    prompt = f"Calculate the relevance score between candidate and job posting:\n" \
+             f"Candidate: {candidate.profile_text}\n" \
+             f"Job Posting: {job_posting.description}"
+
+    # Use Gemini AI to generate the relevance score
+    response = gemini.complete(prompt, stop_sequence='\n', max_tokens=1)
+    relevance_score = float(response.choices[0].text.strip())
+
+    return relevance_score

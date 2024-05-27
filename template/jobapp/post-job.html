@@ -110,6 +110,8 @@
                         {% else %}
                           {% if field.name == 'company_name'%}
                               <h3 class="text-black mt-5 mb-5 border-bottom pb-2">Company Details</h3>
+                          {% elif field.name == 'employee_age' %}
+                          <h3 class="text-black mt-5 mb-5 border-bottom pb-2">Ideal Candidate Details</h3>
                           {% endif%}
                         <div class="form-group">
                             <label class="text-black" for="id_{{ field.name }}">{{ field.label }}</label>
