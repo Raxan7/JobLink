@@ -63,6 +63,7 @@ class JobForm(forms.ModelForm):
         fields = [
             "title",
             "location",
+            "photo",
             "job_type",
             "category",
             "salary",
@@ -220,6 +221,11 @@ class CandidateForm(forms.ModelForm):
                 'placeholder': 'Work Experience...',
             }
         )
+        self.fields['reason_for_leaving'].widget.attrs.update(
+            {
+                'placeholder': 'I quit, I was fired, I did not like the job.....',
+            }
+        )
         self.fields['age'].widget.attrs.update(
             {
                 'placeholder': 'Age',
@@ -233,7 +239,7 @@ class CandidateForm(forms.ModelForm):
 
     class Meta:
         model = Candidate
-        fields = ['skills', 'education', 'work_experience', 'age', 'location']
+        fields = ['age', 'location', 'education', 'work_experience', 'reason_for_leaving', 'skills']
 
     def save(self, commit=True):
         candidate = super(CandidateForm, self).save(commit=False)

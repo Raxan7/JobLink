@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from ckeditor.fields import RichTextField
 from taggit.managers import TaggableManager
+from cloudinary.models import CloudinaryField
 
 User = get_user_model()
 
@@ -28,6 +29,7 @@ class Job(models.Model):
     objects = models.Manager()
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, related_name='User', on_delete=models.CASCADE)
+    photo = CloudinaryField("image")
     title = models.CharField(max_length=300)
     description = RichTextField()
     tags = TaggableManager()
@@ -91,12 +93,14 @@ class BookmarkJob(models.Model):
 
 
 class Candidate(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    age = models.IntegerField()
-    skills = models.CharField(max_length=300, blank=False, null=False)
-    education = models.CharField(max_length=300, blank=False, null=False)
-    work_experience = models.CharField(max_length=300, blank=False, null=False)
-    location = models.CharField(max_length=100, blank=False, null=False)
+    objects = models.Manager()
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='candidate')
+    age = models.IntegerField(null=True, blank=True)
+    skills = models.CharField(max_length=300, blank=True, null=True)
+    education = models.CharField(max_length=300, blank=True, null=True)
+    work_experience = models.CharField(max_length=300, blank=True, null=True)
+    reason_for_leaving = models.CharField(max_length=300, null=True, blank=True)
+    location = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self) -> str:
         return f"{self.user}"

@@ -15,6 +15,12 @@ import django_heroku
 import django
 import dj_database_url
 from django.utils.encoding import force_str
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+import jobapp.context_processor
+
 django.utils.encoding.force_text = force_str
 
 # import nltk
@@ -83,6 +89,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # Custom
+                'jobapp.context_processor.first_candidate_id',
             ],
         },
     },
@@ -105,16 +113,16 @@ WSGI_APPLICATION = 'job.wsgi.application'
 #     }
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
 DATABASES = {
-    "default": dj_database_url.parse("postgresql://manyerere201:exHjyP9UQFX0@ep-shy-mud-a5gs0r74.us-east-2.aws.neon.tech/raxan7_db?sslmode=require")
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
 }
+
+# DATABASES = {
+#     "default": dj_database_url.parse("postgresql://manyerere201:exHjyP9UQFX0@ep-shy-mud-a5gs0r74.us-east-2.aws.neon.tech/raxan7_db?sslmode=require")
+# }
 
 #for debug toolbar
 INTERNAL_IPS = [
@@ -209,4 +217,11 @@ MESSAGE_TAGS = {
 django_heroku.settings(locals())
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+
+# adding config
+cloudinary.config(
+  cloud_name = "dvbdol5uj",
+  api_key = "463778388412657",
+  api_secret = "-ohofO2WCM2YdwCgbGfocwCsGNs"
+)
 

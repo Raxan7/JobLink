@@ -59,8 +59,16 @@ def recommend_applicants_for_job_with_relevance(request, list_of_skills, age):
             relevance = calculate_percentage_relevance(need_age=job.employee_age, need_position=job.title,
                                                        need_skill=i.skill,
                                                        have_age=age, have_skill=list_of_skills)
-            obj = RecommendedApplicant.objects.get_or_create(user_id=user_pk, job_id=job_id)
-            obj[0].age = age
-            obj[0].relevance = relevance
-            obj[0].save()
+            old_relevance = 0
+            if relevance < old_relevance:
+                pass
+            elif relevance > old_relevance:
+                if relevance == 100:
+                    relevance = - 10
+                    obj = RecommendedApplicant.objects.get_or_create(user_id=user_pk, job_id=job_id)
+                    obj[0].age = age
+                    obj[0].relevance = relevance
+                    obj[0].save()
+                    old_relevance = relevance
+
     return JsonResponse({'message': 'Applicants recommended for the job successfully.'})

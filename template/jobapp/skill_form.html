@@ -11,10 +11,10 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <h1 class="text-white font-weight-bold">Update Profile</h1>
+        <h1 class="text-white font-weight-bold">Update Skills</h1>
         <div class="custom-breadcrumbs">
           <a href="{% url 'jobapp:home' %}">Home</a> <span class="mx-2 slash">/</span>
-          <span class="text-white"><strong>Update Profile</strong></span>
+          <span class="text-white"><strong>Update Skills</strong></span>
         </div>
       </div>
     </div>
@@ -47,8 +47,14 @@
         <form method="POST" action="#" class="p-4 border rounded">
           {% csrf_token %}
           {% for field in form %}
-          {% elif field.name == 'employee_age' %}
-            <h3 class="text-black mt-5 mb-5 border-bottom pb-2">Ideal Candidate Details</h3>
+          {% if field.name == 'education' %}
+            <h3 class="text-black mt-5 mb-5 border-bottom pb-2">Education Information</h3>
+          {% elif field.name == 'work_experience' %}
+            <h3 class="text-black mt-5 mb-5 border-bottom pb-2">Work Information</h3>
+          {% elif field.name == 'age' %}
+            <h3 class="text-black mt-5 mb-5 border-bottom pb-2">Personal Information</h3>
+          {% elif field.name == 'skills' %}
+            <h3 class="text-black mt-5 mb-5 border-bottom pb-2">Qualifications</h3>
           {% endif%}
           <div class="row form-group">
             <div class="col-md-12 mb-3 mb-md-0">

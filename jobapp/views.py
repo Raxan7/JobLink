@@ -441,10 +441,11 @@ def employee_edit_skills(request, id=id):
     form = CandidateForm(request.POST or None)
 
     if request.method == 'POST':
+        model_obj = 0
         if form.is_valid():
             form.save(commit=False)
             form.instance.user = user
-            print(form.instance.user)
+            # print(form.instance.user)
             skills = form.instance.skills
             education = form.instance.education
             work_experience = form.instance.work_experience
@@ -457,25 +458,40 @@ def employee_edit_skills(request, id=id):
                     # obj.save()
                     print(skill_name)
                     recommend_applicants_for_job_with_relevance(request, [skill_name.lower()], age=age)
-            form.save()
+            model_obj = Candidate.objects.get_or_create(
+                user=user,
+            )
+            model_obj[0].skills = skills
+            model_obj[0].education = education
+            model_obj[0].work_experience = work_experience
+            model_obj[0].age = age
+            model_obj[0].location = location
+            model_obj[0].save()
+            print(model_obj[0].id)
+            # form.save()
             messages.success(request, 'Your Candidate Profile Was Successfully Updated!')
         else:
             print(form.errors)
-        return redirect(reverse("jobapp:edit-skills", kwargs={'id': user.id}))
+        return redirect(reverse("jobapp:view-skills", kwargs={'id': model_obj[0].id}))
     context = {
         'form': form,
     }
     return render(request, 'jobapp/skill_form.html', context)
 
 
-def calculate_relevance_score(candidate, job_posting):
-    # Define prompts for Gemini AI
-    prompt = f"Calculate the relevance score between candidate and job posting:\n" \
-             f"Candidate: {candidate.profile_text}\n" \
-             f"Job Posting: {job_posting.description}"
+@login_required(login_url=reverse_lazy('account:login'))
+@user_is_employee
+def skill_details_view(request, id):
+    try:
+        applicant = get_object_or_404(User, id=id)
+        skills = get_object_or_404(Candidate, id=id)
 
-    # Use Gemini AI to generate the relevance score
-    response = gemini.complete(prompt, stop_sequence='\n', max_tokens=1)
-    relevance_score = float(response.choices[0].text.strip())
+        context = {
 
-    return relevance_score
+            'applicant': applicant,
+            'skills': skills
+        }
+
+        return render(request, 'jobapp/skills-details.html', context)
+    except Http404:
+        return redirect("jobapp:edit-skills", request.user.id)
