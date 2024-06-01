@@ -45,7 +45,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    # 'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -121,7 +121,8 @@ WSGI_APPLICATION = 'job.wsgi.application'
 # }
 
 DATABASES = {
-    "default": dj_database_url.parse("postgresql://manyerere201:exHjyP9UQFX0@ep-shy-mud-a5gs0r74.us-east-2.aws.neon.tech/raxan7_db?sslmode=require")
+    "default": dj_database_url.parse("postgresql://manyerere201:exHjyP9UQFX0@ep-shy-mud-a5gs0r74.us-east-2.aws.neon."
+                                     "tech/raxan7_db?sslmode=require")
 }
 
 #for debug toolbar
