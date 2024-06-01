@@ -19,7 +19,7 @@ from django.urls import path , include
 from app.views import *
  
 urlpatterns = [
-    # path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('', include('jobapp.urls')),
     path('', include('account.urls')),
     path('upload_cv/',start, name='upload_cv'),
