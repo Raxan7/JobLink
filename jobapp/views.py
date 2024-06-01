@@ -93,7 +93,7 @@ def create_job_View(request):
     """
     Provide the ability to create job post
     """
-    form = JobForm(request.POST or None)
+    form = JobForm(request.POST or None, request.FILES)
 
     user = get_object_or_404(User, id=request.user.id)
     categories = Category.objects.all()

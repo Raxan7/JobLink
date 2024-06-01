@@ -19,6 +19,7 @@ CATEGORY_TYPE = {
 
 
 class Category(models.Model):
+    objects = models.Manager()
     name = models.CharField(max_length=50)
 
     def __str__(self):
@@ -29,7 +30,7 @@ class Job(models.Model):
     objects = models.Manager()
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, related_name='User', on_delete=models.CASCADE)
-    photo = CloudinaryField("image")
+    image = CloudinaryField("image")
     title = models.CharField(max_length=300)
     description = RichTextField()
     tags = TaggableManager()

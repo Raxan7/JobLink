@@ -63,7 +63,7 @@ class JobForm(forms.ModelForm):
         fields = [
             "title",
             "location",
-            "photo",
+            "image",
             "job_type",
             "category",
             "salary",
