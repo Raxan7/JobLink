@@ -481,7 +481,7 @@ def employee_edit_skills(request, id=id):
 
 @login_required(login_url=reverse_lazy('account:login'))
 @user_is_employee
-def skill_details_view(request, id):
+def  skill_details_view(request, id):
     try:
         applicant = get_object_or_404(User, id=id)
         skills = get_object_or_404(Candidate, id=id)

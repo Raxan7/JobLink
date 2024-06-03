@@ -42,7 +42,7 @@ class Job(models.Model):
     company_description = RichTextField(blank=True, null=True)
     url = models.URLField(max_length=200)
     employee_age = models.IntegerField(default=0, blank=True, null=True)
-    employee_relevance_score = models.FloatField(default=0, blank=True, null=True)
+    # employee_relevance_score = models.FloatField(default=0, blank=True, null=True)
     last_date = models.DateField()
     is_published = models.BooleanField(default=False)
     is_closed = models.BooleanField(default=False)

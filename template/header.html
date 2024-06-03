@@ -28,6 +28,7 @@
             <li><a href="{% url 'jobapp:home' %}" class="nav-link">Home</a></li>
             {% if user.is_authenticated and user.role == 'employee'  %}
             <li><a href="{% url 'jobapp:dashboard' %}" style="font-weight: bolder;">Jobs For Me</a></li>
+            <li><a href="{% url 'jobapp:edit-skills' candidate_id %}" style="font-weight: bolder;">Broadcast CV</a></li>
             <li><a href="{% url 'jobapp:view-skills' candidate_id %}" style="font-weight: bolder;">View Information</a></li>
             {% elif user.is_authenticated and user.role == 'employer'  %}
               <li><a href="{% url 'jobapp:dashboard' %}">My Jobs</a></li>

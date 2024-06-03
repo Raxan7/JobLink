@@ -74,7 +74,6 @@ class JobForm(forms.ModelForm):
             "company_description",
             "url",
             'employee_age',
-            'employee_relevance_score',
         ]
 
     def clean_job_type(self):
