@@ -28,22 +28,22 @@
 
         {% include 'messages.html' %}
 
-        {% if form.errors %}
-        {% for field in form %}
-        {% for error in field.errors %}
-        <div class="alert alert-danger alert-dismissable">
-          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-          <strong>{{ error|escape }}</strong>
-        </div>
-        {% endfor %}
-        {% endfor %}
-        {% for error in form.non_field_errors %}
-        <div class="alert alert-danger alert-dismissable">
-          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-          <strong>{{ error|escape }}</strong>
-        </div>
-        {% endfor %}
-        {% endif %}
+<!--        {% if form.errors %}-->
+<!--        {% for field in form %}-->
+<!--        {% for error in field.errors %}-->
+<!--        <div class="alert alert-danger alert-dismissable">-->
+<!--          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>-->
+<!--          <strong>{{ error|escape }}</strong>-->
+<!--        </div>-->
+<!--        {% endfor %}-->
+<!--        {% endfor %}-->
+<!--        {% for error in form.non_field_errors %}-->
+<!--        <div class="alert alert-danger alert-dismissable">-->
+<!--          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>-->
+<!--          <strong>{{ error|escape }}</strong>-->
+<!--        </div>-->
+<!--        {% endfor %}-->
+<!--        {% endif %}-->
         <form method="POST" action="#" class="p-4 border rounded" enctype="multipart/form-data">
           {% csrf_token %}
           {% for field in form %}
