@@ -96,6 +96,7 @@ class BookmarkJob(models.Model):
 class Candidate(models.Model):
     objects = models.Manager()
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='candidate')
+    image = CloudinaryField("image")
     age = models.IntegerField(null=True, blank=True)
     skills = models.CharField(max_length=300, blank=True, null=True)
     education = models.CharField(max_length=300, blank=True, null=True)

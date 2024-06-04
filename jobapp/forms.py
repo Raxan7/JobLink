@@ -238,7 +238,7 @@ class CandidateForm(forms.ModelForm):
 
     class Meta:
         model = Candidate
-        fields = ['age', 'location', 'education', 'work_experience', 'reason_for_leaving', 'skills']
+        fields = ['image', 'age', 'location', 'education', 'work_experience', 'reason_for_leaving', 'skills']
 
     def save(self, commit=True):
         candidate = super(CandidateForm, self).save(commit=False)

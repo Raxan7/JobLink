@@ -438,14 +438,15 @@ def employee_edit_skills(request, id=id):
     Handle Employee Profile Update Functionality
     """
     user = get_object_or_404(User, id=id)
-    form = CandidateForm(request.POST or None)
+    form = CandidateForm(request.POST or None, request.FILES)
 
     if request.method == 'POST':
         model_obj = 0
         if form.is_valid():
             form.save(commit=False)
             form.instance.user = user
-            # print(form.instance.user)
+            print(form.instance.image)
+            image = form.instance.image
             skills = form.instance.skills
             education = form.instance.education
             work_experience = form.instance.work_experience
@@ -461,6 +462,7 @@ def employee_edit_skills(request, id=id):
             model_obj = Candidate.objects.get_or_create(
                 user=user,
             )
+            model_obj[0].image = image
             model_obj[0].skills = skills
             model_obj[0].education = education
             model_obj[0].work_experience = work_experience
@@ -481,7 +483,7 @@ def employee_edit_skills(request, id=id):
 
 @login_required(login_url=reverse_lazy('account:login'))
 @user_is_employee
-def  skill_details_view(request, id):
+def skill_details_view(request, id):
     try:
         applicant = get_object_or_404(User, id=id)
         skills = get_object_or_404(Candidate, id=id)

@@ -59,6 +59,7 @@ def recommend_applicants_for_job_with_relevance(request, list_of_skills, age):
             relevance = calculate_percentage_relevance(need_age=job.employee_age, need_position=job.title,
                                                        need_skill=i.skill,
                                                        have_age=age, have_skill=list_of_skills)
+            relevance = int(relevance)
             old_relevance = 0
             if relevance < old_relevance:
                 pass
