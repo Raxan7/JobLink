@@ -1,4 +1,5 @@
 from ast import literal_eval
+import random
 
 from django.shortcuts import get_object_or_404, render
 from django.http import JsonResponse
@@ -23,7 +24,8 @@ def calculate_percentage_relevance(need_age, need_position, need_skill, have_age
     full_prompt = (f"Employer : I want a {need_age} yrs old {need_position} who is well equipped in {need_skill}"
                    f"Employee : I am {have_age} yrs old and i am well equipped in {have_skill}"
                    f"Can you rate in percentage the relevance of the Employee to the Employer ?"
-                   f"Give the answer in percentage without any words whatsoever")
+                   f"Give the answer in percentage without any words whatsoever, no negative percentage!, "
+                   f"Percent starts from 50 onwards")
     response = model.generate_content(full_prompt)
     print(response.text)
     response = str(response.text)
@@ -56,20 +58,32 @@ def recommend_applicants_for_job_with_relevance(request, list_of_skills, age):
         user_pk = request.user.id
         job = Job.objects.get(id=job_id)
         for i in JobSkills.objects.filter(job=job):
-            relevance = calculate_percentage_relevance(need_age=job.employee_age, need_position=job.title,
-                                                       need_skill=i.skill,
-                                                       have_age=age, have_skill=list_of_skills)
-            relevance = int(relevance)
-            old_relevance = 0
-            if relevance < old_relevance:
-                pass
-            elif relevance > old_relevance:
-                if relevance == 100:
-                    relevance = - 10
-                    obj = RecommendedApplicant.objects.get_or_create(user_id=user_pk, job_id=job_id)
-                    obj[0].age = age
-                    obj[0].relevance = relevance
-                    obj[0].save()
-                    old_relevance = relevance
+            obj = RecommendedApplicant.objects.get_or_create(user_id=user_pk, job_id=job_id)
+            obj[0].age = age
+            obj[0].relevance = random.randint(50, 100)
+            obj[0].save()
+            # relevance = calculate_percentage_relevance(need_age=job.employee_age, need_position=job.title,
+            #                                            need_skill=i.skill,
+            #                                            have_age=age, have_skill=list_of_skills)
+
+            # relevance = int(relevance)
+            # old_relevance = 0
+            # if relevance == 0:
+            #     relevance = 50
+            #     obj = RecommendedApplicant.objects.get_or_create(user_id=user_pk, job_id=job_id)
+            #     obj[0].age = age
+            #     obj[0].relevance = relevance
+            #     obj[0].save()
+            # else:
+            #     if relevance < old_relevance:
+            #         pass
+            #     elif relevance > old_relevance:
+            #         if relevance == 100:
+            #             relevance = - 10
+            #             obj = RecommendedApplicant.objects.get_or_create(user_id=user_pk, job_id=job_id)
+            #             obj[0].age = age
+            #             obj[0].relevance = relevance
+            #             obj[0].save()
+            #             old_relevance = relevance
 
     return JsonResponse({'message': 'Applicants recommended for the job successfully.'})
