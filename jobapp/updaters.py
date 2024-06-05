@@ -7,8 +7,6 @@ import google.generativeai as genai
 from django.db import IntegrityError, transaction
 
 from transformers import BertTokenizer, BertModel
-import torch
-import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 
 GOOGLE_API_KEY = 'AIzaSyAX8YiDkmNyeLhCnGZOZ4Uq_2gJyXvatNs'

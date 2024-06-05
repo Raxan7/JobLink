@@ -1,13 +1,10 @@
-import google.generativeai as genai
 from django.contrib import messages
-from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q, Subquery
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.http import Http404, HttpResponseRedirect, JsonResponse
-from django.core.serializers import serialize
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
 
@@ -464,13 +461,12 @@ def employee_edit_skills(request, id=id):
             skills = form.instance.skills
             education = form.instance.education
             work_experience = form.instance.work_experience
+            reason_for_leaving = form.instance.reason_for_leaving
             age = form.instance.age
             location = form.instance.location
             if ',' in skills:
                 skill_list = [item.strip() for item in skills.split(",")]
                 for skill_name in skill_list:
-                    # obj = add_skill(email=user, name=skill_name)
-                    # obj.save()
                     print(skill_name)
                     recommend_applicants_for_job_with_relevance(request, [skill_name.lower()], age=age)
             model_obj = Candidate.objects.get_or_create(
@@ -481,6 +477,7 @@ def employee_edit_skills(request, id=id):
             model_obj[0].education = education
             model_obj[0].work_experience = work_experience
             model_obj[0].age = age
+            model_obj[0].reason_for_leaving = reason_for_leaving
             model_obj[0].location = location
             model_obj[0].save()
             print(model_obj[0].id)
@@ -488,7 +485,7 @@ def employee_edit_skills(request, id=id):
             messages.success(request, 'Your Candidate Profile Was Successfully Updated!')
         else:
             print(form.errors)
-        return redirect(reverse("jobapp:view-skills", kwargs={'id': model_obj[0].id}))
+        return redirect(reverse("jobapp:view-skills", kwargs={'id': id}))
     context = {
         'form': form,
     }
