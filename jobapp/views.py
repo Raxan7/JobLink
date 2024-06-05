@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db.models import Q, Subquery
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.http import Http404, HttpResponseRedirect, JsonResponse
@@ -319,7 +319,15 @@ def all_applicants_view(request, id):
 @login_required(login_url=reverse_lazy('account:login'))
 @user_is_employer
 def all_recommended_applicants_view(request, id):
-    all_applicants = RecommendedApplicant.objects.filter(job=id).order_by("-relevance")
+    user = request.user.id
+    age_subquery = Job.objects.filter(user__id=user).values('employee_age')
+
+    all_applicants = RecommendedApplicant.objects.filter(
+        job__user__id=user,
+        job__employee_age__gte=Subquery(age_subquery)
+    ).order_by('-relevance')
+
+    # all_applicants = RecommendedApplicant.objects.filter(job=id).order_by("-relevance")
 
     context = {
 
@@ -421,11 +429,17 @@ def job_edit_view(request, id=id):
 @login_required(login_url=reverse_lazy('account:login'))
 @user_is_employer
 def total_recommended_applicants_view(request):
-    applicant = RecommendedApplicant.objects.filter(job__user=request.user)
+    user = request.user.id
+    age_subquery = Job.objects.filter(user__id=user).values('employee_age')
+
+    all_applicants = RecommendedApplicant.objects.filter(
+        job__user__id=user,
+        job__employee_age__gte=Subquery(age_subquery)
+    ).order_by('-relevance')
 
     context = {
 
-        'all_applicants': applicant
+        'all_applicants': all_applicants
     }
 
     return render(request, 'jobapp/all-recommended-applicants.html', context)
