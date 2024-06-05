@@ -100,7 +100,7 @@ redis==4.3.4
 regex==2023.12.25
 requests==2.31.0
 rsa==4.9
-scikit-learn==1.5.0
+# scikit-learn==1.5.0
 simplegeneric==0.8.1
 six==1.16.0
 smart-open==6.4.0
@@ -116,7 +116,7 @@ thinc==8.2.3
 tornado==6.4
 tqdm==4.66.2
 traitlets==5.14.2
-transformers==4.41.2
+# transformers==4.41.2
 typer==0.9.4
 typing_extensions==4.11.0
 ua-parser==0.10.0
