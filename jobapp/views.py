@@ -448,48 +448,51 @@ def employee_edit_skills(request, id=id):
     """
     Handle Employee Profile Update Functionality
     """
-    user = get_object_or_404(User, id=id)
-    form = CandidateForm(request.POST or None, request.FILES)
+    try:
+        user = get_object_or_404(User, id=id)
+        form = CandidateForm(request.POST or None, request.FILES)
 
-    if request.method == 'POST':
-        model_obj = 0
-        if form.is_valid():
-            form.save(commit=False)
-            form.instance.user = user
-            print(form.instance.image)
-            image = form.instance.image
-            skills = form.instance.skills
-            education = form.instance.education
-            work_experience = form.instance.work_experience
-            reason_for_leaving = form.instance.reason_for_leaving
-            age = form.instance.age
-            location = form.instance.location
-            if ',' in skills:
-                skill_list = [item.strip() for item in skills.split(",")]
-                for skill_name in skill_list:
-                    print(skill_name)
-                    recommend_applicants_for_job_with_relevance(request, [skill_name.lower()], age=age)
-            model_obj = Candidate.objects.get_or_create(
-                user=user,
-            )
-            model_obj[0].image = image
-            model_obj[0].skills = skills
-            model_obj[0].education = education
-            model_obj[0].work_experience = work_experience
-            model_obj[0].age = age
-            model_obj[0].reason_for_leaving = reason_for_leaving
-            model_obj[0].location = location
-            model_obj[0].save()
-            print(model_obj[0].id)
-            # form.save()
-            messages.success(request, 'Your Candidate Profile Was Successfully Updated!')
-        else:
-            print(form.errors)
-        return redirect(reverse("jobapp:view-skills", kwargs={'id': id}))
-    context = {
-        'form': form,
-    }
-    return render(request, 'jobapp/skill_form.html', context)
+        if request.method == 'POST':
+            model_obj = 0
+            if form.is_valid():
+                form.save(commit=False)
+                form.instance.user = user
+                print(form.instance.image)
+                image = form.instance.image
+                skills = form.instance.skills
+                education = form.instance.education
+                work_experience = form.instance.work_experience
+                reason_for_leaving = form.instance.reason_for_leaving
+                age = form.instance.age
+                location = form.instance.location
+                if ',' in skills:
+                    skill_list = [item.strip() for item in skills.split(",")]
+                    for skill_name in skill_list:
+                        print(skill_name)
+                        recommend_applicants_for_job_with_relevance(request, [skill_name.lower()], age=age)
+                model_obj = Candidate.objects.get_or_create(
+                    user=user,
+                )
+                model_obj[0].image = image
+                model_obj[0].skills = skills
+                model_obj[0].education = education
+                model_obj[0].work_experience = work_experience
+                model_obj[0].age = age
+                model_obj[0].reason_for_leaving = reason_for_leaving
+                model_obj[0].location = location
+                model_obj[0].save()
+                print(model_obj[0].id)
+                # form.save()
+                messages.success(request, 'Your Candidate Profile Was Successfully Updated!')
+            else:
+                print(form.errors)
+            return redirect(reverse("jobapp:view-skills", kwargs={'id': id}))
+        context = {
+            'form': form,
+        }
+        return render(request, 'jobapp/skill_form.html', context)
+    except Http404:
+        return redirect("jobapp:edit-skills", request.user.id)
 
 
 @login_required(login_url=reverse_lazy('account:login'))

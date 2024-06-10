@@ -108,7 +108,7 @@ class Candidate(models.Model):
     education = models.CharField(max_length=300, blank=True, null=True)
     work_experience = models.CharField(max_length=300, blank=True, null=True)
     reason_for_leaving = models.CharField(max_length=300, null=True, blank=True)
-    location = models.CharField(max_length=100, blank=True, null=True)
+    location = models.CharField(choices=[(loc, loc) for loc in tanzania], max_length=300)
 
     def __str__(self) -> str:
         return f"{self.user}"
