@@ -5,6 +5,8 @@ from ckeditor.fields import RichTextField
 from taggit.managers import TaggableManager
 from cloudinary.models import CloudinaryField
 
+from mtaa import tanzania
+
 User = get_user_model()
 
 JOB_TYPE = (
@@ -14,13 +16,17 @@ JOB_TYPE = (
 )
 
 CATEGORY_TYPE = {
-    ()
+    ("In-Office", "In-Office"),
+    ("Remote", "Remote"),
+    ("Hybrid", "Hybrid"),
 }
 
 
 class Category(models.Model):
     objects = models.Manager()
-    name = models.CharField(max_length=50)
+    # name = models.CharField(max_length=50)
+    name = models.CharField(choices=CATEGORY_TYPE, max_length=50)
+    # job_type = models.CharField(choices=JOB_TYPE, max_length=1)
 
     def __str__(self):
         return self.name
@@ -34,7 +40,7 @@ class Job(models.Model):
     title = models.CharField(max_length=300)
     description = RichTextField()
     tags = TaggableManager()
-    location = models.CharField(max_length=300)
+    location = models.CharField(choices=[(loc, loc) for loc in tanzania], max_length=300)
     job_type = models.CharField(choices=JOB_TYPE, max_length=1)
     category = models.ForeignKey(Category, related_name='Category', on_delete=models.CASCADE)
     salary = models.CharField(max_length=30, blank=True)
