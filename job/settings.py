@@ -29,7 +29,6 @@ django.utils.encoding.force_text = force_str
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
@@ -40,7 +39,6 @@ SECRET_KEY = 'etdq)uvq=t0rc&ams5_ovn6w8bcwknjj0u97*(#n^(76x*+dr1'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -60,7 +58,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'taggit',
     'user_visit',
-    'debug_toolbar',
+    # 'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -72,7 +70,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'user_visit.middleware.UserVisitMiddleware',   
+    'user_visit.middleware.UserVisitMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
@@ -81,7 +79,7 @@ ROOT_URLCONF = 'job.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,'template')],
+        'DIRS': [os.path.join(BASE_DIR, 'template')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -97,7 +95,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'job.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
@@ -126,11 +123,11 @@ DATABASES = {
 }
 
 #for debug toolbar
-INTERNAL_IPS = [
-    # ...
-    "127.0.0.1",
-    # ...
-]
+# INTERNAL_IPS = [
+#     # ...
+#     "127.0.0.1",
+#     # ...
+# ]
 # CACHES
 # ------------------------------------------------------------------------------
 
@@ -163,7 +160,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -177,7 +173,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
@@ -186,7 +181,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
@@ -202,7 +197,6 @@ CKEDITOR_CONFIGS = {
     }
 }
 
-
 from django.contrib.messages import constants as messages
 
 MESSAGE_TAGS = {
@@ -213,7 +207,6 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
 }
 
-
 # Activate Django-Heroku.
 django_heroku.settings(locals())
 
@@ -221,8 +214,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 # adding config
 cloudinary.config(
-  cloud_name = "dvbdol5uj",
-  api_key = "463778388412657",
-  api_secret = "-ohofO2WCM2YdwCgbGfocwCsGNs"
+    cloud_name="dvbdol5uj",
+    api_key="463778388412657",
+    api_secret="-ohofO2WCM2YdwCgbGfocwCsGNs"
 )
-
