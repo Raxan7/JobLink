@@ -2,7 +2,7 @@ import random
 
 from django.shortcuts import get_object_or_404, render
 from django.http import JsonResponse
-from .models import Job, JobSkills, RecommendedApplicant
+from .models import Job, JobSkills, RecommendedApplicant, Candidate
 from app.models import add_skill
 from django.db.models import Q
 from django.contrib.auth import get_user_model
@@ -44,7 +44,10 @@ def recommend_applicants_for_job(request, job_id):
     print(users_with_skills)
     for user_id in users_with_skills:
         user_pk = User.objects.get(email=user_id).id
-        RecommendedApplicant.objects.get_or_create(user_id=user_pk, job_id=job_id)
+        obj = RecommendedApplicant.objects.get_or_create(user_id=user_pk, job_id=job_id)
+        obj[0].age = Candidate.objects.get(user__id=user_pk).age
+        obj[0].relevance = random.randint(50, 100)
+        obj[0].save()
     return JsonResponse({'message': 'Applicants recommended for the job successfully.'})
 
 

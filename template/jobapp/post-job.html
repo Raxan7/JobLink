@@ -3,12 +3,8 @@
   {% block content %}
 
     <!-- HOME -->
-    <section class="section-hero overlay inner-page bg-image" id="home-section">
-      <video autoplay muted loop id="bg-video">
-        <source src="{% static 'videos/typing.mp4' %}" type="video/mp4">
-        <!-- Add more <source> tags for other video formats if needed -->
-        Your browser does not support the video tag.
-      </video>
+    <section class="home-section section-hero overlay bg-image"
+  style="background-image: url('{% static 'images/hero_1.jpg' %}');" id="home-section">
       <div class="container">
         <div class="row">
           <div class="col-md-7">
