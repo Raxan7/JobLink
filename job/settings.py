@@ -218,3 +218,10 @@ cloudinary.config(
     api_key="463778388412657",
     api_secret="-ohofO2WCM2YdwCgbGfocwCsGNs"
 )
+
+EMAIL_BACKEND = "anymail.backends.mailjet.EmailBackend"
+ANYMAIL = {
+    "MAILJET_API_KEY": "f21e7fe3df212a1d545b365fb6e047dc",
+    "MAILJET_SECRET_KEY": "8d0385af8e9a9fd76aace2b4692bdd7a",
+    # "WEBHOOK_SECRET": str(os.getenv('WEBHOOK_SECRET')),
+}

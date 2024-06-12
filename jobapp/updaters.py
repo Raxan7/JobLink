@@ -1,5 +1,6 @@
 import random
 
+from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, render
 from django.http import JsonResponse
 from .models import Job, JobSkills, RecommendedApplicant, Candidate
@@ -44,10 +45,10 @@ def recommend_applicants_for_job(request, job_id):
     print(users_with_skills)
     for user_id in users_with_skills:
         user_pk = User.objects.get(email=user_id).id
-        RecommendedApplicant.objects.get_or_create(user_id=user_pk, job_id=job_id)
-        # obj[0].age = Candidate.objects.get(user__id=user_pk).age
-        # obj[0].relevance = random.randint(50, 100)
-        # obj[0].save()
+        obj = RecommendedApplicant.objects.get_or_create(user_id=user_pk, job_id=job_id)
+        obj.age = Candidate.objects.get(user__id=user_pk).age
+        obj.relevance = random.randint(50, 100)
+        obj.save()
     return JsonResponse({'message': 'Applicants recommended for the job successfully.'})
 
 
@@ -64,6 +65,16 @@ def recommend_applicants_for_job_with_relevance(request, list_of_skills, age):
             obj[0].age = age
             obj[0].relevance = random.randint(50, 100)
             obj[0].save()
+
+            to_send = User.objects.get(id=user_pk)
+            full_name = f"{to_send.first_name} {to_send.last_name}"
+            email = to_send.email
+            subject = 'JobLink Recommendation System Alert'
+            message = (f'Dear {full_name}, you have been Recommended to this Job {job.title} from '
+                       f'{job.company_name} Company. \n\nYou can also apply to increase your chances of getting the Job!')
+            from_email = 'no-reply-akacha@raxan7.com'
+            recipient_list = [email]
+            send_mail(subject, message, from_email, recipient_list)
             # relevance = calculate_percentage_relevance(need_age=job.employee_age, need_position=job.title,
             #                                            need_skill=i.skill,
             #                                            have_age=age, have_skill=list_of_skills)

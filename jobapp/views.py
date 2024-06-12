@@ -350,10 +350,12 @@ def delete_bookmark_view(request, id):
 @user_is_employer
 def applicant_details_view(request, id):
     applicant = get_object_or_404(User, id=id)
+    candidate = get_object_or_404(Candidate, user__id=id)
 
     context = {
 
-        'applicant': applicant
+        'applicant': applicant,
+        'candidate': candidate
     }
 
     return render(request, 'jobapp/applicant-details.html', context)
