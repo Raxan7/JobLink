@@ -493,8 +493,9 @@ def employee_edit_skills(request, id=id):
                 # form.save()
                 messages.success(request, 'Your Candidate Profile Was Successfully Updated!')
             else:
-                form = CandidateForm(instance=candidate)
                 print(form.errors)
+        else:
+            form = CandidateForm(instance=candidate)
             # return redirect(reverse("jobapp:view-skills", kwargs={'id': id}))
         return render(request, 'jobapp/skill_form.html', {'form': form,})
     except Http404:
