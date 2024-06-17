@@ -457,9 +457,9 @@ def employee_edit_skills(request, id=id):
     try:
         candidate = get_object_or_404(Candidate, id=id)
         user = get_object_or_404(User, id=id)
-        form = CandidateForm(request.POST or None, request.FILES)
 
         if request.method == 'POST':
+            form = CandidateForm(request.POST or None, request.FILES)
             model_obj = 0
             if form.is_valid():
                 form.save(commit=False)
@@ -494,7 +494,7 @@ def employee_edit_skills(request, id=id):
             else:
                 form = CandidateForm(instance=candidate)
                 print(form.errors)
-            return redirect(reverse("jobapp:view-skills", kwargs={'id': id}))
+            # return redirect(reverse("jobapp:view-skills", kwargs={'id': id}))
         context = {
             'form': form,
         }
