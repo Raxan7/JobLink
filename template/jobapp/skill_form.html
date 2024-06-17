@@ -28,7 +28,7 @@
         <form method="POST" enctype="multipart/form-data">
           {% csrf_token %}
           {% for field in form %}
-          {% if field.name == 'education' %}
+          {% if field.name == 'university_level' %}
             <h3 class="text-black mt-5 mb-5 border-bottom pb-2">Education Information</h3>
           {% elif field.name == 'work_experience' %}
             <h3 class="text-black mt-5 mb-5 border-bottom pb-2">Work Information</h3>

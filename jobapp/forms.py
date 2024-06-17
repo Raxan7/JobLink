@@ -208,9 +208,9 @@ class CandidateForm(forms.ModelForm):
                 'placeholder': 'Python3, Django, ...',
             }
         )
-        self.fields['education'].widget.attrs.update(
+        self.fields['university_level'].widget.attrs.update(
             {
-                'placeholder': 'Education Institutions Attended',
+                'placeholder': 'University Institutions Attended',
             }
         )
         self.fields['work_experience'].widget.attrs.update(
@@ -236,7 +236,7 @@ class CandidateForm(forms.ModelForm):
 
     class Meta:
         model = Candidate
-        fields = ['image', 'age', 'location', 'education', 'work_experience', 'reason_for_leaving', 'skills']
+        fields = ['image', 'age', 'location', 'university_level', 'advanced_level', 'ordinary_level', 'primary_level', 'work_experience', 'reason_for_leaving', 'skills']
 
     def save(self, commit=True):
         candidate = super(CandidateForm, self).save(commit=False)
