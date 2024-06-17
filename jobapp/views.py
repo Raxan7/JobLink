@@ -534,5 +534,5 @@ def edit_candidate(request, candidate_id):
     else:
         form = CandidateForm(instance=candidate)
 
-    return render(request, 'jobapp:edit_candidate.html', {'form': form, 'candidate': candidate})
+    return render(request, 'jobapp/edit_candidate.html', {'form': form, 'candidate': candidate})
 
