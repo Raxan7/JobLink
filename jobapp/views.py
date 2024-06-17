@@ -448,58 +448,105 @@ def total_recommended_applicants_view(request):
     return render(request, 'jobapp/all-recommended-applicants.html', context)
 
 
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import Http404
+from django.urls import reverse_lazy, reverse
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .models import Candidate, User
+from .forms import CandidateForm
+from .decorators import user_is_employee  # Ensure this decorator is properly defined
+from .utils import recommend_applicants_for_job_with_relevance  # Assuming this function is defined
+
 @login_required(login_url=reverse_lazy('accounts:login'))
 @user_is_employee
-def employee_edit_skills(request, id=id):
+def employee_edit_skills(request, id):
     """
     Handle Employee Profile Update Functionality
     """
     try:
         candidate = get_object_or_404(Candidate, id=id)
-        user = get_object_or_404(User, id=id)
-        # form = CandidateForm()
+        user = candidate.user
 
         if request.method == 'POST':
-            form = CandidateForm(request.POST or None, request.FILES)
-            model_obj = 0
+            form = CandidateForm(request.POST, request.FILES, instance=candidate)
             if form.is_valid():
-                form.save(commit=False)
-                form.instance.user = user
-                print(form.instance.image)
-                image = form.instance.image
-                skills = form.instance.skills
-                education = form.instance.education
-                work_experience = form.instance.work_experience
-                reason_for_leaving = form.instance.reason_for_leaving
-                age = form.instance.age
-                location = form.instance.location
+                candidate = form.save(commit=False)
+                candidate.user = user
+                candidate.save()
+
+                # Process skills
+                skills = candidate.skills
                 if ',' in skills:
                     skill_list = [item.strip() for item in skills.split(",")]
                     for skill_name in skill_list:
-                        print(skill_name)
-                        recommend_applicants_for_job_with_relevance(request, [skill_name.lower()], age=age)
-                model_obj = Candidate.objects.get_or_create(
-                    user=user,
-                )
-                model_obj[0].image = image
-                model_obj[0].skills = skills
-                model_obj[0].education = education
-                model_obj[0].work_experience = work_experience
-                model_obj[0].age = age
-                model_obj[0].reason_for_leaving = reason_for_leaving
-                model_obj[0].location = location
-                model_obj[0].save()
-                print(model_obj[0].id)
-                # form.save()
+                        recommend_applicants_for_job_with_relevance(request, [skill_name.lower()], age=candidate.age)
+
                 messages.success(request, 'Your Candidate Profile Was Successfully Updated!')
+                return redirect(reverse("jobapp:view-skills", kwargs={'id': id}))
             else:
-                print(form.errors)
+                messages.error(request, 'Please correct the errors below.')
         else:
             form = CandidateForm(instance=candidate)
-            # return redirect(reverse("jobapp:view-skills", kwargs={'id': id}))
-        return render(request, 'jobapp/skill_form.html', {'form': form,})
+
+        return render(request, 'jobapp/skill_form.html', {'form': form})
     except Http404:
         return redirect("jobapp:edit-skills", request.user.id)
+
+
+
+# @login_required(login_url=reverse_lazy('accounts:login'))
+# @user_is_employee
+# def employee_edit_skills(request, id=id):
+#     """
+#     Handle Employee Profile Update Functionality
+#     """
+#     try:
+#         candidate = get_object_or_404(Candidate, id=id)
+#         user = get_object_or_404(User, id=id)
+#         # form = CandidateForm()
+
+#         if request.method == 'POST':
+#             form = CandidateForm(request.POST or None, request.FILES)
+#             model_obj = 0
+#             if form.is_valid():
+#                 form.save(commit=False)
+#                 form.instance.user = user
+#                 print(form.instance.image)
+#                 image = form.instance.image
+#                 skills = form.instance.skills
+#                 education = form.instance.education
+#                 work_experience = form.instance.work_experience
+#                 reason_for_leaving = form.instance.reason_for_leaving
+#                 age = form.instance.age
+#                 location = form.instance.location
+#                 if ',' in skills:
+#                     skill_list = [item.strip() for item in skills.split(",")]
+#                     for skill_name in skill_list:
+#                         print(skill_name)
+#                         recommend_applicants_for_job_with_relevance(request, [skill_name.lower()], age=age)
+#                 model_obj = Candidate.objects.get_or_create(
+#                     user=user,
+#                 )
+#                 model_obj[0].image = image
+#                 model_obj[0].skills = skills
+#                 model_obj[0].education = education
+#                 model_obj[0].work_experience = work_experience
+#                 model_obj[0].age = age
+#                 model_obj[0].reason_for_leaving = reason_for_leaving
+#                 model_obj[0].location = location
+#                 model_obj[0].save()
+#                 print(model_obj[0].id)
+#                 # form.save()
+#                 messages.success(request, 'Your Candidate Profile Was Successfully Updated!')
+#             else:
+#                 print(form.errors)
+#         else:
+#             form = CandidateForm(instance=candidate)
+#             # return redirect(reverse("jobapp:view-skills", kwargs={'id': id}))
+#         return render(request, 'jobapp/skill_form.html', {'form': form,})
+#     except Http404:
+#         return redirect("jobapp:edit-skills", request.user.id)
 
 
 @login_required(login_url=reverse_lazy('account:login'))
