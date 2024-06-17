@@ -480,8 +480,7 @@ def employee_edit_skills(request, id):
             form = CandidateForm(instance=candidate)
 
         return render(request, 'jobapp/skill_form.html', {'form': form})
-    except Http404 as e:
-        print("Error : " + e)
+    except Http404:
         return redirect("jobapp:edit-skills", request.user.id)
         # return redirect(reverse("jobapp:view-skills", kwargs={'id': id}))
 
