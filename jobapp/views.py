@@ -517,3 +517,22 @@ def skill_details_view(request, id):
         return render(request, 'jobapp/skills-details.html', context)
     except Http404:
         return redirect("jobapp:edit-skills", request.user.id)
+
+
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Candidate
+from .forms import CandidateForm
+
+def edit_candidate(request, candidate_id):
+    candidate = get_object_or_404(Candidate, id=candidate_id)
+
+    if request.method == 'POST':
+        form = CandidateForm(request.POST, request.FILES, instance=candidate)
+        if form.is_valid():
+            form.save()
+            return redirect('candidate_detail', candidate_id=candidate.id)  # Redirect to a success page
+    else:
+        form = CandidateForm(instance=candidate)
+
+    return render(request, 'jobapp:edit_candidate.html', {'form': form, 'candidate': candidate})
+

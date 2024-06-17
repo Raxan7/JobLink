@@ -32,4 +32,6 @@ urlpatterns = [
     path('skills/<int:id>/', views.employee_edit_skills, name='edit-skills'),
     path('view-skills/<int:id>/', views.skill_details_view, name='view-skills'),
 
+    path('candidate/<int:candidate_id>/edit/', views.edit_candidate, name='edit_candidate'),
+
 ]
