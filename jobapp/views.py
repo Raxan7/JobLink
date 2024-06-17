@@ -455,7 +455,7 @@ def employee_edit_skills(request, id=id):
     Handle Employee Profile Update Functionality
     """
     try:
-        candidate = get_object_or_404(Candiate, id=id)
+        candidate = get_object_or_404(Candidate, id=id)
         user = get_object_or_404(User, id=id)
         form = CandidateForm(request.POST or None, request.FILES)
 
