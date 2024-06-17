@@ -448,16 +448,6 @@ def total_recommended_applicants_view(request):
     return render(request, 'jobapp/all-recommended-applicants.html', context)
 
 
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import Http404
-from django.urls import reverse_lazy, reverse
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from .models import Candidate, User
-from .forms import CandidateForm
-from .decorators import user_is_employee  # Ensure this decorator is properly defined
-from .utils import recommend_applicants_for_job_with_relevance  # Assuming this function is defined
-
 @login_required(login_url=reverse_lazy('accounts:login'))
 @user_is_employee
 def employee_edit_skills(request, id):
