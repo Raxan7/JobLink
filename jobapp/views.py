@@ -457,6 +457,7 @@ def employee_edit_skills(request, id=id):
     try:
         candidate = get_object_or_404(Candidate, id=id)
         user = get_object_or_404(User, id=id)
+        form = CandidateForm()
 
         if request.method == 'POST':
             form = CandidateForm(request.POST or None, request.FILES)
@@ -491,16 +492,13 @@ def employee_edit_skills(request, id=id):
                 print(model_obj[0].id)
                 # form.save()
                 messages.success(request, 'Your Candidate Profile Was Successfully Updated!')
-                context = {
-                    'form': form,
-                }
             else:
                 form = CandidateForm(instance=candidate)
                 print(form.errors)
-                context = {
-                    'form': form,
-                }
             # return redirect(reverse("jobapp:view-skills", kwargs={'id': id}))
+        context = {
+            'form': form,
+        }
         return render(request, 'jobapp/skill_form.html', context)
     except Http404:
         return redirect("jobapp:edit-skills", request.user.id)
