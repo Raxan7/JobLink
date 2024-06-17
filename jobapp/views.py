@@ -459,7 +459,7 @@ def employee_edit_skills(request, id):
         user = candidate.user
 
         if request.method == 'POST':
-            form = CandidateForm(request.POST, request.FILES, instance=candidate)
+            form = CandidateForm(request.POST or None, request.FILES, instance=candidate)
             if form.is_valid():
                 candidate = form.save(commit=False)
                 candidate.user = user
@@ -480,8 +480,10 @@ def employee_edit_skills(request, id):
             form = CandidateForm(instance=candidate)
 
         return render(request, 'jobapp/skill_form.html', {'form': form})
-    except Http404:
+    except Http404 as e:
+        print("Error : " + e)
         return redirect("jobapp:edit-skills", request.user.id)
+        # return redirect(reverse("jobapp:view-skills", kwargs={'id': id}))
 
 
 
