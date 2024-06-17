@@ -455,6 +455,7 @@ def employee_edit_skills(request, id=id):
     Handle Employee Profile Update Functionality
     """
     try:
+        candidate = get_object_or_404(Candiate, id=id)
         user = get_object_or_404(User, id=id)
         form = CandidateForm(request.POST or None, request.FILES)
 
@@ -491,6 +492,7 @@ def employee_edit_skills(request, id=id):
                 # form.save()
                 messages.success(request, 'Your Candidate Profile Was Successfully Updated!')
             else:
+                form = CandidateForm(instance=candidate)
                 print(form.errors)
             return redirect(reverse("jobapp:view-skills", kwargs={'id': id}))
         context = {
