@@ -36,7 +36,17 @@
                 {% endif %}
             </p>
             <p><h3>Age :</h3>{{ candidate.age }}</p>
-            <p><h3>Education Information :</h3>{{ candidate.education }}</p>
+            <p><h3>Education Information :</h3>
+              <br>
+              <p><strong>University: </strong>{{ candidate.university_level }}</p>
+              <br>
+              <p><strong>Advanced Level: </strong>{{ candidate.advanced_level }}</p>
+              <br>
+              <p><strong>Ordinary Level: </strong>{{ candidate.ordinary_level }}</p>
+              <br>
+              <p><strong>Primary Level: </strong>{{ candidate.primary_level }}</p>
+              <br>
+            </p>
             <p><h3>Work Experience :</h3>{{ candidate.work_experience }}
               <br>
               <strong>Reason For Leaving: </strong> {{ candidate.reason_for_leaving }}</p>

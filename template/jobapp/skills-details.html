@@ -48,7 +48,17 @@
                 {% endif %}
             </p>
             <p><h3>Age :</h3>{{ skills.age }}</p>
-            <p><h3>Education Information :</h3>{{ skills.education }}</p>
+            <p><h3>Education Information :</h3>
+              <br>
+              <p><strong>University: </strong>{{ skills.university_level }}</p>
+              <br>
+              <p><strong>Advanced Level: </strong>{{ skills.advanced_level }}</p>
+              <br>
+              <p><strong>Ordinary Level: </strong>{{ skills.ordinary_level }}</p>
+              <br>
+              <p><strong>Primary Level: </strong>{{ skills.primary_level }}</p>
+              <br>
+            </p>
             <p><h3>Work Experience :</h3>{{ skills.work_experience }}
               <br>
               <strong>Reason For Leaving: </strong> {{ skills.reason_for_leaving }}</p>
