@@ -21,6 +21,12 @@ CATEGORY_TYPE = {
     ("Hybrid", "Hybrid"),
 }
 
+MARITAL_STATUS = {
+    ("Single", "Single"),
+    ("Married", "Married"),
+    ("Widowed", "Widowed"),
+}
+
 
 class Category(models.Model):
     objects = models.Manager()
@@ -104,14 +110,24 @@ class Candidate(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='candidate')
     image = CloudinaryField("image")
     age = models.IntegerField(null=True, blank=True)
-    skills = models.CharField(max_length=300, blank=True, null=True)
+    place_of_birth = models.CharField(choices=[(loc, loc) for loc in tanzania], max_length=300)
+    place_of_domicile = models.CharField(choices=[(loc, loc) for loc in tanzania], max_length=300)
+    nationality = models.CharField(max_length=300, blank=True, null=True, default="Nationality")
+    marital_status = models.CharField(choices=MARITAL_STATUS, max_length=50, default="Single")
+    language = models.CharField(max_length=300, blank=True, null=True, default="Marital")
     university_level = models.CharField(max_length=300, blank=True, null=True, default="University of Dodoma")
     advanced_level = models.CharField(max_length=300, blank=True, null=True, default="Tabora Boys High School")
     ordinary_level = models.CharField(max_length=300, blank=True, null=True, default="Alliance Boys Secondary School")
     primary_level = models.CharField(max_length=300, blank=True, null=True, default="St. Francis De Sales Mission School")
-    work_experience = models.CharField(max_length=300, blank=True, null=True)
+    company = models.CharField(max_length=300, blank=True, null=True)
+    position = models.CharField(max_length=300, blank=True, null=True)
+    start_date = models.DateField(null=True)
+    end_date = models.DateField(null=True)
+    duties = models.CharField(max_length=300, blank=True, null=True)
+    hobbies = models.CharField(max_length=300, blank=True, null=True)
     reason_for_leaving = models.CharField(max_length=300, null=True, blank=True)
-    location = models.CharField(choices=[(loc, loc) for loc in tanzania], max_length=300)
+    # location = models.CharField(choices=[(loc, loc) for loc in tanzania], max_length=300)
+    skills = models.CharField(max_length=300, blank=True, null=True)
 
     def __str__(self) -> str:
         return f"{self.user}"
