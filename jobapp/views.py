@@ -540,6 +540,27 @@ def employee_edit_skills(request, id):
 #         return redirect("jobapp:edit-skills", request.user.id)
 
 
+@login_required(login_url=reverse_lazy('accounts:login'))
+def create_candidate(request):
+    """
+    Create a Candidate profile for the logged-in user
+    """
+    user = request.user
+    if request.method == 'POST':
+        form = CandidateForm(request.POST, request.FILES)
+        if form.is_valid():
+            candidate = form.save(commit=False)
+            candidate.id = user.id  # Set the candidate ID to the user's ID
+            candidate.user = user  # Assuming there is a user field in the Candidate model
+            candidate.save()
+            messages.success(request, 'Your Candidate Profile Was Successfully Created!')
+            return redirect('candidate_detail', candidate_id=candidate.id)  # Redirect to the candidate detail page
+    else:
+        form = CandidateForm()
+
+    return render(request, 'jobapp/create_candidate.html', {'form': form})
+
+
 @login_required(login_url=reverse_lazy('account:login'))
 @user_is_employee
 def skill_details_view(request, id):

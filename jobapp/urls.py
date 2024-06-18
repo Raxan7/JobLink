@@ -34,4 +34,6 @@ urlpatterns = [
 
     path('candidate/<int:candidate_id>/edit/', views.edit_candidate, name='edit_candidate'),
 
+    path('create-cv', views.create_candidate, name='create_candidate')
+
 ]

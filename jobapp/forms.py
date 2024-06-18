@@ -213,9 +213,9 @@ class CandidateForm(forms.ModelForm):
                 'placeholder': 'University Institutions Attended',
             }
         )
-        self.fields['work_experience'].widget.attrs.update(
+        self.fields['company'].widget.attrs.update(
             {
-                'placeholder': 'Work Experience...',
+                'placeholder': 'Company worked at...',
             }
         )
         self.fields['reason_for_leaving'].widget.attrs.update(
@@ -228,7 +228,7 @@ class CandidateForm(forms.ModelForm):
                 'placeholder': 'Age',
             }
         )
-        self.fields['location'].widget.attrs.update(
+        self.fields['place_of_domicile'].widget.attrs.update(
             {
                 'placeholder': 'Place of Residence',
             }
