@@ -34,7 +34,31 @@
             <h3 class="text-black mt-5 mb-5 border-bottom pb-2">Personal Information</h3>
           {% elif field.name == 'skills' %}
             <h3 class="text-black mt-5 mb-5 border-bottom pb-2">Qualifications</h3>
-          {% endif %}
+          {% elif field.name == 'place_of_birth' %}
+              <div class="form-group">
+                  <label for="place_of_birth">Place Of Birth</label>
+                  <select name="place_of_birth" class="selectpicker border rounded" id="place_of_birth" data-style="btn-black" data-width="100%" data-live-search="true" title="Select Location">
+
+                {% if field %}
+
+                      <option value="{{ field }}"></option>
+
+                {% endif %}
+                  </select>
+              </div>
+          {% elif field.name == 'place_of_domicile' %}
+            <div class="form-group">
+                <label for="place_of_domicile">Place Of Domicile</label>
+                <select name="place_of_domicile" class="selectpicker border rounded" id="place_of_domicile" data-style="btn-black" data-width="100%" data-live-search="true" title="Select Location">
+
+              {% if field %}
+
+                    <option value="{{ field }}"></option>
+
+              {% endif %}
+                </select>
+            </div>
+          {% else %}
           <div class="row form-group">
             <div class="col-md-12 mb-3 mb-md-0">
               <label class="text-black" for="id_{{ field.name }}">{{ field.label }}</label>
@@ -42,6 +66,7 @@
                 id="id_{{ field.name }}" placeholder="{{ field.field.widget.attrs.placeholder }}">
             </div>
           </div>
+          {% endif %}
           {% endfor %}
           <div class="row form-group">
             <div class="col-md-12">
