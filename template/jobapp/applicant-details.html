@@ -35,7 +35,21 @@
                     Female
                 {% endif %}
             </p>
-            <p><h3>Age :</h3>{{ candidate.age }}</p>
+            <p><h3>Personal Information :</h3>
+              <br>
+              <p><strong>Age: </strong>{{ candidate.age }}</p>
+              <br>
+              <p><strong>Place Of Birth: </strong>{{ candidate.place_of_birth }}</p>
+              <br>
+              <p><strong>Place Of Domicile: </strong>{{ candidate.place_of_domicile }}</p>
+              <br>
+              <p><strong>Nationality: </strong>{{ candidate.nationality }}</p>
+              <br>
+              <p><strong>Marital Status: </strong>{{ candidate.marital_status }}</p>
+              <br>
+              <p><strong>Languages: </strong>{{ candidate.language }}</p>
+              <br>
+            </p>
             <p><h3>Education Information :</h3>
               <br>
               <p><strong>University: </strong>{{ candidate.university_level }}</p>
@@ -47,11 +61,24 @@
               <p><strong>Primary Level: </strong>{{ candidate.primary_level }}</p>
               <br>
             </p>
-            <p><h3>Work Experience :</h3>{{ candidate.work_experience }}
+            <p><h3>Work Experience :</h3>
               <br>
-              <strong>Reason For Leaving: </strong> {{ candidate.reason_for_leaving }}</p>
-            <p><h3>Skills Information :</h3>{{ candidate.skills }}</p>
-            <p><h3>Location :</h3>{{ candidate.location }}</p>
+              <p><strong>Company: </strong>{{ candidate.company }}</p>
+              <br>
+              <p><strong>Position: </strong>{{ candidate.position }}</p>
+              <br>
+              <p><strong>Start Date: </strong>{{ candidate.start_date }}</p>
+              <br>
+              <p><strong>End Date: </strong>{{ candidate.end_date }}</p>
+              <br>
+              <p><strong>Duties: </strong>{{ candidate.duties }}</p>
+              <br>
+              <p><strong>Reason For Leaving: </strong>{{ candidate.reason_for_leaving }}</p>
+              <br>
+              <p><strong>Skills: </strong>{{ candidate.skills }}</p>
+              <br>
+            </p>
+            <p><h3>Hobbies :</h3>{{ candidate.hobbies }}</p>
             <p><a href="mailto:{{ applicant.email }}" class="btn btn-primary btn-md mt-4">Contact</a></p>
           </div>
         </div>

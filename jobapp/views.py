@@ -561,7 +561,7 @@ def create_candidate(request):
                     recommend_applicants_for_job_with_relevance(request, [skill_name.lower()], age=candidate.age)
 
             messages.success(request, 'Your Candidate Profile Was Successfully Created!')
-            return redirect('candidate_detail', candidate_id=candidate.id)  # Redirect to the candidate detail page
+            return redirect('jobapp:view-skills', id=candidate.id)  # Redirect to the candidate detail page
     else:
         form = CandidateForm()
 
